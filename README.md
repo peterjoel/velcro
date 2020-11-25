@@ -1,9 +1,9 @@
 # Velcro
 
-A simple macro for initializing vectors in a convenient and flexible way. The
+A simple macro for initializing vectors in a variety of interesting ways. The
 macro supports a superset of the input of the built-in `vec!` macro, adding
 sequences of values which can be "spread" into the vector by preceding them with
-the `..` operator. These values must implement `IntoIterator`.
+the `..` operator. In order to be spread, values must implement `IntoIterator`.
 
 ## Examples
 
