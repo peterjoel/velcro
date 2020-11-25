@@ -7,9 +7,9 @@ license = "Unlicense OR MIT"
 description = """
 A convenience macro for initializing vectors.
 """
-documentation = "https://github.com/peterjoeol/velcro"
-homepage = "https://github.com/peterjoeol/velcro"
-repository = "https://github.com/peterjoeol/velcro"
+documentation = "https://github.com/peterjoel/velcro"
+homepage = "https://github.com/peterjoel/velcro"
+repository = "https://github.com/peterjoel/velcro"
 keywords = ["vec", "vector", "macro"]
 categories = ["data-structures", "rust-patterns"]
 
