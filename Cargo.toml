@@ -1,0 +1,16 @@
+[package]
+name = "velcro"
+version = "0.1.0"
+authors = ["Peter Hall <peterjoel@gmail.com>"]
+edition = "2018"
+license = "Unlicense OR MIT"
+description = """
+A convenience macro for initializing vectors.
+"""
+documentation = "https://github.com/peterjoeol/velcro"
+homepage = "https://github.com/peterjoeol/velcro"
+repository = "https://github.com/peterjoeol/velcro"
+keywords = ["vec", "vector", "macro"]
+categories = ["data-structures", "rust-patterns"]
+
+[dependencies]
