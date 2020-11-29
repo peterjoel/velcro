@@ -1,17 +1,23 @@
 [package]
-name = "velcro"
+name = "velcro_macros"
 version = "0.2.0"
 authors = ["Peter Hall <peterjoel@gmail.com>"]
 edition = "2018"
 license = "Unlicense OR MIT"
 description = """
-A convenience macro for initializing vectors.
+Procedural macros used by the `velcro` crate. See `velcro` for documentation
 """
 documentation = "https://docs.rs/velcro/latest/velcro"
 homepage = "https://github.com/peterjoel/velcro"
 repository = "https://github.com/peterjoel/velcro"
-keywords = ["vec", "vector", "macro"]
+keywords = []
 categories = ["data-structures", "rust-patterns"]
 
+[lib]
+proc-macro = true
+
 [dependencies]
-velcro_macros = { version = "=0.2.0", path = "macros" }
+itertools = "0.9"
+proc-macro2 = "1"
+quote = "1"
+syn = { version = "1", features = ["full"] }
