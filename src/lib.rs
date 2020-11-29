@@ -37,3 +37,18 @@
 /// since it delegates to `std::vec!` wherever the input is compatible. That is,
 /// if you don't use the `..` spread operator, you don't pay for it.
 pub use velcro_macros::velcro_vec as vec;
+
+// / An initializer for `BTreeSet`, allowing for items to be specified individually
+// / or "spread" using the `..` operator
+// / # Usage
+// /
+// / ```rust
+// / # use std::collections::BTreeSet;
+// / use velcro::btree_set;
+// / let set: BTreeSet<_> = (0..7).into_iter().collect();
+// /
+// / assert_eq!(btree_set![..0..7], set);
+// / assert_eq!(btree_set![0, 1, ..2..7], set);
+// /```
+pub use velcro_macros::velcro_btree_set as btree_set;
+pub use velcro_macros::velcro_hash_set as hash_set;

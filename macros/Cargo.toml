@@ -1,6 +1,6 @@
 [package]
 name = "velcro_macros"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Peter Hall <peterjoel@gmail.com>"]
 edition = "2018"
 license = "Unlicense OR MIT"
@@ -17,7 +17,6 @@ categories = ["data-structures", "rust-patterns"]
 proc-macro = true
 
 [dependencies]
-itertools = "0.9"
 proc-macro2 = "1"
 quote = "1"
 syn = { version = "1", features = ["full"] }
