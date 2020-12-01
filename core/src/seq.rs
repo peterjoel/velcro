@@ -5,7 +5,7 @@ use syn::parse::{Parse, ParseStream};
 use syn::punctuated::{Pair, Punctuated};
 use syn::Token;
 
-pub(crate) struct SeqInput {
+pub struct SeqInput {
     values: Punctuated<Value, Token![,]>,
 }
 

@@ -5,7 +5,7 @@ use quote::quote;
 use syn::parse::{Parse, ParseStream};
 use syn::{Expr, Token};
 
-pub(crate) enum VecInput {
+pub enum VecInput {
     Seq(VecSeqInput),
     Repeat(VecRepeatInput),
 }
@@ -47,7 +47,7 @@ fn find_semicolon_separator(input: ParseStream) -> bool {
         .unwrap_or(false)
 }
 
-pub(crate) struct VecRepeatInput {
+pub struct VecRepeatInput {
     value: Value,
     len: Expr,
 }
@@ -90,7 +90,7 @@ impl Parse for VecRepeatInput {
     }
 }
 
-pub(crate) struct VecSeqInput(SeqInput);
+pub struct VecSeqInput(SeqInput);
 
 impl Parse for VecSeqInput {
     fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {

@@ -1,11 +1,11 @@
 [package]
-name = "velcro_macros"
+name = "velcro_core"
 version = "0.2.1"
 authors = ["Peter Hall <peterjoel@gmail.com>"]
 edition = "2018"
 license = "Unlicense OR MIT"
 description = """
-Procedural macros used by the `velcro` crate. See `velcro` for documentation.
+Core dependencies used by the `velcro` crate. See `velcro` for documentation.
 
 It is not advised to depend on this crate directly; it is an internal 
 dependency of `velcro` and may be subject to breaking changes. 
@@ -16,11 +16,7 @@ repository = "https://github.com/peterjoel/velcro"
 keywords = []
 categories = ["data-structures", "rust-patterns"]
 
-[lib]
-proc-macro = true
-
 [dependencies]
 proc-macro2 = "1"
 quote = "1"
 syn = { version = "1", features = ["full"] }
-velcro_core = { version = "=0.2.1", path = "../core" }
