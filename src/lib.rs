@@ -40,7 +40,7 @@
 pub use velcro_macros::vec;
 
 /// An initializer for `BTreeSet`, allowing for items to be specified individually
-/// or "spread" using the `..` operator
+/// or "spread" using the `..` operator.
 ///
 /// # Usage
 ///
@@ -55,7 +55,7 @@ pub use velcro_macros::vec;
 pub use velcro_macros::btree_set;
 
 /// An initializer for `HashSet`, allowing for items to be specified individually
-/// or "spread" using the `..` operator
+/// or "spread" using the `..` operator.
 ///
 /// # Usage
 ///
@@ -70,20 +70,20 @@ pub use velcro_macros::btree_set;
 pub use velcro_macros::hash_set;
 
 /// Creates an iterator, over the given values. Other collections and iterators
-/// may also be interspersed, or "spread", using the `..` operator
+/// may also be interspersed, or "spread", using the `..` operator.
 ///
 /// # Usage
 ///
 /// ```rust
-/// use velcro::values;
+/// use velcro::iter;
 /// let vec = vec![0, 1, 2, 3];
 ///
-/// assert_eq!(values![..vec, 4, 5, 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
+/// assert_eq!(iter![..vec, 4, 5, 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
 ///
-/// for x in values![0, 1, ..2..=5, 6] {
+/// for x in iter![0, 1, ..2..=5, 6] {
 ///    println!("x = {}", x);   
-/// } 
+/// }
 ///
-/// assert_eq!(values![0, 1, ..2..=5, 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
+/// assert_eq!(iter![0, 1, ..2..=5, 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
 ///```
-pub use velcro_macros::values;
+pub use velcro_macros::iter;

@@ -1,6 +1,6 @@
-use velcro_core::{BTreeSetInput, HashSetInput, ValuesInput, VecInput};
 use proc_macro::TokenStream;
 use syn::parse_macro_input;
+use velcro_core::{BTreeSetInput, HashSetInput, IterInput, VecInput};
 
 #[proc_macro]
 pub fn vec(input: TokenStream) -> TokenStream {
@@ -21,7 +21,7 @@ pub fn hash_set(input: TokenStream) -> TokenStream {
 }
 
 #[proc_macro]
-pub fn values(input: TokenStream) -> TokenStream {
-    let output = parse_macro_input!(input as ValuesInput).into_output();
+pub fn iter(input: TokenStream) -> TokenStream {
+    let output = parse_macro_input!(input as IterInput).into_output();
     TokenStream::from(output)
 }
