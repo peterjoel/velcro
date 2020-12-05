@@ -2,7 +2,7 @@ use crate::seq::SeqInput;
 use crate::value::{Value, ValueExpr, ValueIterExpr, Verbatim};
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::{quote, ToTokens};
-use syn::parse::{Parse, ParseStream};
+use syn::parse::{self, Parse, ParseStream};
 
 pub struct BTreeSetInput<V = Verbatim>(SeqInput<V>);
 
@@ -10,7 +10,7 @@ impl<V> Parse for BTreeSetInput<V>
 where
     Value<V>: Parse,
 {
-    fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
+    fn parse(input: ParseStream<'_>) -> parse::Result<Self> {
         Ok(BTreeSetInput(input.parse()?))
     }
 }

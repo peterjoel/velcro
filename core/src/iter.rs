@@ -2,15 +2,15 @@ use crate::seq::SeqInput;
 use crate::value::{Value, ValueExpr, ValueIterExpr, Verbatim};
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::{quote, ToTokens};
-use syn::parse::{Parse, ParseStream};
+use syn::parse::{self, Parse, ParseStream};
 
-pub struct IterInput<W = Verbatim>(SeqInput<W>);
+pub struct IterInput<V = Verbatim>(SeqInput<V>);
 
-impl<W> Parse for IterInput<W>
+impl<V> Parse for IterInput<V>
 where
-    Value<W>: Parse,
+    Value<V>: Parse,
 {
-    fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
+    fn parse(input: ParseStream<'_>) -> parse::Result<Self> {
         Ok(IterInput(input.parse()?))
     }
 }

@@ -2,20 +2,20 @@ use crate::value::{Value, ValueExpr, ValueIterExpr, Verbatim};
 use proc_macro2::TokenStream;
 use quote::ToTokens;
 use std::marker::PhantomData;
-use syn::parse::{Parse, ParseStream};
+use syn::parse::{self, Parse, ParseStream};
 use syn::punctuated::{Pair, Punctuated};
 use syn::Token;
 
-pub struct SeqInput<W = Verbatim> {
-    values: Punctuated<Value<W>, Token![,]>,
-    _phantom: PhantomData<W>,
+pub struct SeqInput<V = Verbatim> {
+    values: Punctuated<Value<V>, Token![,]>,
+    _phantom: PhantomData<V>,
 }
 
-impl<W> Parse for SeqInput<W>
+impl<V> Parse for SeqInput<V>
 where
-    Value<W>: Parse,
+    Value<V>: Parse,
 {
-    fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
+    fn parse(input: ParseStream<'_>) -> parse::Result<Self> {
         Ok(SeqInput {
             values: input.parse_terminated(Value::parse)?,
             _phantom: PhantomData,

@@ -1,7 +1,7 @@
 use proc_macro2::TokenStream;
 use quote::{quote_spanned, ToTokens, TokenStreamExt};
 use std::marker::PhantomData;
-use syn::parse::{Parse, ParseStream};
+use syn::parse::{self, Parse, ParseStream};
 use syn::{spanned::Spanned, Expr, Token};
 
 pub enum Value<V> {
@@ -19,7 +19,7 @@ impl<V> Parse for Value<V>
 where
     ValueExpr<V>: Parse,
 {
-    fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
+    fn parse(input: ParseStream<'_>) -> parse::Result<Self> {
         if input.peek(Token![..]) {
             let _: Token![..] = input.parse()?;
             Ok(Value::Many(input.parse()?))
@@ -42,13 +42,13 @@ where
     }
 }
 
-pub struct ValueExpr<W> {
-    expr: Expr,
-    _phantom: PhantomData<W>,
+pub struct ValueExpr<V> {
+    pub expr: Expr,
+    pub _phantom: PhantomData<V>,
 }
 
-impl<W> Parse for ValueExpr<W> {
-    fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
+impl<V> Parse for ValueExpr<V> {
+    fn parse(input: ParseStream<'_>) -> parse::Result<Self> {
         Ok(ValueExpr {
             expr: input.parse()?,
             _phantom: PhantomData,
@@ -56,13 +56,13 @@ impl<W> Parse for ValueExpr<W> {
     }
 }
 
-pub struct ValueIterExpr<W> {
+pub struct ValueIterExpr<V> {
     expr: Expr,
-    _phantom: PhantomData<W>,
+    _phantom: PhantomData<V>,
 }
 
-impl<W> Parse for ValueIterExpr<W> {
-    fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
+impl<V> Parse for ValueIterExpr<V> {
+    fn parse(input: ParseStream<'_>) -> parse::Result<Self> {
         Ok(ValueIterExpr {
             expr: input.parse()?,
             _phantom: PhantomData,

@@ -94,6 +94,26 @@ pub use velcro_macros::btree_set;
 ///```
 pub use velcro_macros::hash_set;
 
+/// An initializer for `HashMap`, allowing for entries to be specified individually
+/// or for the same value to be given to multiple keys using the `..` operator.
+///
+/// # Usage
+///
+/// ```rust
+/// # use std::collections::HashMap;
+/// use velcro::hash_map;
+/// let mut map = HashMap::new();
+/// map.insert('a', 0);
+/// map.insert('b', 1);
+/// map.insert('c', 1);
+/// map.insert('d', 1);
+/// map.insert('e', 2);
+/// map.insert('f', 3);
+///
+/// assert_eq!(hash_map!{ 'a': 0, 'b'..='d': 1, 'e': 2, 'f': 3}, map);
+///```
+pub use velcro_macros::hash_map;
+
 /// Creates an iterator, over the given values. Other collections and iterators
 /// may also be interspersed, or "spread", using the `..` operator.
 ///

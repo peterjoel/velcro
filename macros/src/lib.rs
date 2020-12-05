@@ -1,6 +1,9 @@
 use proc_macro::TokenStream;
 use syn::parse_macro_input;
-use velcro_core::{BTreeSetInput, ConvertInto, HashSetInput, IterInput, VecInput};
+use velcro_core::{
+    parse_raw_macro_input, BTreeMapInput, BTreeSetInput, ConvertInto, HashMapInput, HashSetInput,
+    IterInput, VecInput,
+};
 
 #[proc_macro]
 pub fn vec(input: TokenStream) -> TokenStream {
@@ -17,6 +20,18 @@ pub fn btree_set(input: TokenStream) -> TokenStream {
 #[proc_macro]
 pub fn hash_set(input: TokenStream) -> TokenStream {
     let output = parse_macro_input!(input as HashSetInput).into_output();
+    TokenStream::from(output)
+}
+
+#[proc_macro]
+pub fn hash_map(input: TokenStream) -> TokenStream {
+    let output = parse_raw_macro_input!(input as HashMapInput).into_output();
+    TokenStream::from(output)
+}
+
+#[proc_macro]
+pub fn btree_map(input: TokenStream) -> TokenStream {
+    let output = parse_raw_macro_input!(input as BTreeMapInput).into_output();
     TokenStream::from(output)
 }
 
@@ -47,5 +62,17 @@ pub fn hash_set_from(input: TokenStream) -> TokenStream {
 #[proc_macro]
 pub fn iter_from(input: TokenStream) -> TokenStream {
     let output = parse_macro_input!(input as IterInput<ConvertInto>).into_output();
+    TokenStream::from(output)
+}
+
+#[proc_macro]
+pub fn hash_map_from(input: TokenStream) -> TokenStream {
+    let output = parse_raw_macro_input!(input as HashMapInput<ConvertInto>).into_output();
+    TokenStream::from(output)
+}
+
+#[proc_macro]
+pub fn btree_map_from(input: TokenStream) -> TokenStream {
+    let output = parse_raw_macro_input!(input as BTreeMapInput<ConvertInto>).into_output();
     TokenStream::from(output)
 }

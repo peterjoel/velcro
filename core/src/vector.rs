@@ -2,14 +2,14 @@ use crate::seq::SeqInput;
 use crate::value::{Value, ValueExpr, ValueIterExpr, Verbatim};
 use proc_macro2::{Ident, Span, TokenStream, TokenTree};
 use quote::{quote, ToTokens};
-use syn::parse::{Parse, ParseStream};
+use syn::parse::{self, Parse, ParseStream};
 use syn::{Expr, Token};
 
 // TODO: Find out why Repeat is 568 bytes
 #[allow(clippy::large_enum_variant)]
-pub enum VecInput<W = Verbatim> {
-    Seq(VecSeqInput<W>),
-    Repeat(VecRepeatInput<W>),
+pub enum VecInput<V = Verbatim> {
+    Seq(VecSeqInput<V>),
+    Repeat(VecRepeatInput<V>),
 }
 
 impl<V> VecInput<V>
@@ -30,7 +30,7 @@ where
     ValueExpr<V>: ToTokens,
     ValueIterExpr<V>: ToTokens,
 {
-    fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
+    fn parse(input: ParseStream<'_>) -> parse::Result<Self> {
         Ok(if find_semicolon_separator(input) {
             VecInput::Repeat(input.parse()?)
         } else {
@@ -57,14 +57,14 @@ fn find_semicolon_separator(input: ParseStream) -> bool {
         .unwrap_or(false)
 }
 
-pub struct VecRepeatInput<W> {
-    value: Value<W>,
+pub struct VecRepeatInput<V> {
+    value: Value<V>,
     len: Expr,
 }
 
-impl<W> VecRepeatInput<W>
+impl<V> VecRepeatInput<V>
 where
-    Value<W>: ToTokens,
+    Value<V>: ToTokens,
 {
     fn into_output(self) -> TokenStream {
         if self.value.is_simple() {
@@ -91,11 +91,11 @@ where
     }
 }
 
-impl<W> Parse for VecRepeatInput<W>
+impl<V> Parse for VecRepeatInput<V>
 where
-    Value<W>: Parse,
+    Value<V>: Parse,
 {
-    fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
+    fn parse(input: ParseStream<'_>) -> parse::Result<Self> {
         Ok(VecRepeatInput {
             value: input.parse()?,
             len: {
@@ -106,13 +106,13 @@ where
     }
 }
 
-pub struct VecSeqInput<W>(SeqInput<W>);
+pub struct VecSeqInput<V>(SeqInput<V>);
 
-impl<W> Parse for VecSeqInput<W>
+impl<V> Parse for VecSeqInput<V>
 where
-    Value<W>: Parse,
+    Value<V>: Parse,
 {
-    fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
+    fn parse(input: ParseStream<'_>) -> parse::Result<Self> {
         Ok(VecSeqInput(input.parse()?))
     }
 }
