@@ -20,7 +20,5 @@ categories = ["data-structures", "rust-patterns"]
 proc-macro = true
 
 [dependencies]
-proc-macro2 = "1"
-quote = "1"
 syn = { version = "1", features = ["full"] }
 velcro_core = { version = "=0.3.0", path = "../core" }

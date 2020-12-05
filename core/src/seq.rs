@@ -22,7 +22,7 @@ impl SeqInput {
         self.values.iter().all(Value::is_simple)
     }
 
-    pub fn values(&self) -> impl Iterator<Item = &Value> {
+    pub fn values(&self) -> impl ExactSizeIterator<Item = &Value> {
         self.values.iter()
     }
 

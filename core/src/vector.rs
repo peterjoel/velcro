@@ -107,6 +107,13 @@ impl VecSeqInput {
             }
         } else {
             let target = Ident::new("vec", Span::call_site());
+            let values = self.0.values();
+            // A simple heuristic for the initial capacity. At this point we can guess that
+            // the output length is likely to be greater than the number of values, since
+            // at least one of the values is an iterator. This will reduce the number of
+            // allocations in common cases, while not massively over-allocating when the
+            // collection is small.
+            let initial_capacity = 16.max(values.len().next_power_of_two() * 2);
             let updates = self.0.values().map(|value| match value {
                 Value::One(expr) => quote! {
                     #target.push(#expr);
@@ -116,7 +123,7 @@ impl VecSeqInput {
                 },
             });
             quote! {{
-                let mut #target = ::std::vec::Vec::new();
+                let mut #target = ::std::vec::Vec::with_capacity(#initial_capacity);
                 #(#updates)*
                 #target
             }}
