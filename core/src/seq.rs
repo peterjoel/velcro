@@ -1,28 +1,38 @@
-use crate::value::Value;
+use crate::value::{Value, ValueExpr, ValueIterExpr, Verbatim};
 use proc_macro2::TokenStream;
 use quote::ToTokens;
+use std::marker::PhantomData;
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::{Pair, Punctuated};
 use syn::Token;
 
-pub struct SeqInput {
-    values: Punctuated<Value, Token![,]>,
+pub struct SeqInput<W = Verbatim> {
+    values: Punctuated<Value<W>, Token![,]>,
+    _phantom: PhantomData<W>,
 }
 
-impl Parse for SeqInput {
+impl<W> Parse for SeqInput<W>
+where
+    Value<W>: Parse,
+{
     fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
         Ok(SeqInput {
             values: input.parse_terminated(Value::parse)?,
+            _phantom: PhantomData,
         })
     }
 }
 
-impl SeqInput {
+impl<V> SeqInput<V>
+where
+    ValueExpr<V>: ToTokens,
+    ValueIterExpr<V>: ToTokens,
+{
     pub fn is_simple(&self) -> bool {
         self.values.iter().all(Value::is_simple)
     }
 
-    pub fn values(&self) -> impl ExactSizeIterator<Item = &Value> {
+    pub fn values(&self) -> impl ExactSizeIterator<Item = &Value<V>> {
         self.values.iter()
     }
 
@@ -30,7 +40,7 @@ impl SeqInput {
         self.values
             .into_pairs()
             .map(Pair::into_tuple)
-            .map(|(expr, delim)| Pair::new(expr.expr(), delim).into_token_stream())
+            .map(|(value, delim)| Pair::new(value.into_token_stream(), delim).into_token_stream())
             .collect()
     }
 }

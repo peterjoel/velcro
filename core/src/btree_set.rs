@@ -1,18 +1,25 @@
 use crate::seq::SeqInput;
-use crate::value::Value;
+use crate::value::{Value, ValueExpr, ValueIterExpr, Verbatim};
 use proc_macro2::{Ident, Span, TokenStream};
-use quote::quote;
+use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream};
 
-pub struct BTreeSetInput(SeqInput);
+pub struct BTreeSetInput<V = Verbatim>(SeqInput<V>);
 
-impl Parse for BTreeSetInput {
+impl<V> Parse for BTreeSetInput<V>
+where
+    Value<V>: Parse,
+{
     fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
         Ok(BTreeSetInput(input.parse()?))
     }
 }
 
-impl BTreeSetInput {
+impl<V> BTreeSetInput<V>
+where
+    ValueExpr<V>: ToTokens,
+    ValueIterExpr<V>: ToTokens,
+{
     pub fn into_output(self) -> TokenStream {
         let target = Ident::new("set", Span::call_site());
         let updates = self.0.values().map(|value| match value {

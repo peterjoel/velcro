@@ -6,5 +6,9 @@ mod value;
 mod vector;
 
 pub use crate::{
-    btree_set::BTreeSetInput, hash_set::HashSetInput, iter::IterInput, vector::VecInput,
+    btree_set::BTreeSetInput,
+    hash_set::HashSetInput,
+    iter::IterInput,
+    value::{ConvertInto, Verbatim},
+    vector::VecInput,
 };

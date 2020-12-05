@@ -1,16 +1,22 @@
 use crate::seq::SeqInput;
-use crate::value::Value;
+use crate::value::{Value, ValueExpr, ValueIterExpr, Verbatim};
 use proc_macro2::{Ident, Span, TokenStream, TokenTree};
-use quote::quote;
+use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream};
 use syn::{Expr, Token};
 
-pub enum VecInput {
-    Seq(VecSeqInput),
-    Repeat(VecRepeatInput),
+// TODO: Find out why Repeat is 568 bytes
+#[allow(clippy::large_enum_variant)]
+pub enum VecInput<W = Verbatim> {
+    Seq(VecSeqInput<W>),
+    Repeat(VecRepeatInput<W>),
 }
 
-impl VecInput {
+impl<V> VecInput<V>
+where
+    ValueExpr<V>: ToTokens,
+    ValueIterExpr<V>: ToTokens,
+{
     pub fn into_output(self) -> TokenStream {
         match self {
             VecInput::Seq(seq) => seq.into_output(),
@@ -19,7 +25,11 @@ impl VecInput {
     }
 }
 
-impl Parse for VecInput {
+impl<V> Parse for VecInput<V>
+where
+    ValueExpr<V>: ToTokens,
+    ValueIterExpr<V>: ToTokens,
+{
     fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
         Ok(if find_semicolon_separator(input) {
             VecInput::Repeat(input.parse()?)
@@ -47,12 +57,15 @@ fn find_semicolon_separator(input: ParseStream) -> bool {
         .unwrap_or(false)
 }
 
-pub struct VecRepeatInput {
-    value: Value,
+pub struct VecRepeatInput<W> {
+    value: Value<W>,
     len: Expr,
 }
 
-impl VecRepeatInput {
+impl<W> VecRepeatInput<W>
+where
+    Value<W>: ToTokens,
+{
     fn into_output(self) -> TokenStream {
         if self.value.is_simple() {
             self.simple_output()
@@ -63,7 +76,7 @@ impl VecRepeatInput {
 
     fn simple_output(self) -> TokenStream {
         let len = self.len;
-        let expr = self.value.expr();
+        let expr = &self.value;
         quote! {
             ::std::vec![#expr; #len]
         }
@@ -71,14 +84,17 @@ impl VecRepeatInput {
 
     fn splatted_output(self) -> TokenStream {
         let len = self.len;
-        let expr = self.value.expr();
+        let expr = &self.value;
         quote! {
             #expr.into_iter().take(#len).collect::<::std::vec::Vec<_>>()
         }
     }
 }
 
-impl Parse for VecRepeatInput {
+impl<W> Parse for VecRepeatInput<W>
+where
+    Value<W>: Parse,
+{
     fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
         Ok(VecRepeatInput {
             value: input.parse()?,
@@ -90,15 +106,22 @@ impl Parse for VecRepeatInput {
     }
 }
 
-pub struct VecSeqInput(SeqInput);
+pub struct VecSeqInput<W>(SeqInput<W>);
 
-impl Parse for VecSeqInput {
+impl<W> Parse for VecSeqInput<W>
+where
+    Value<W>: Parse,
+{
     fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
         Ok(VecSeqInput(input.parse()?))
     }
 }
 
-impl VecSeqInput {
+impl<V> VecSeqInput<V>
+where
+    ValueExpr<V>: ToTokens,
+    ValueIterExpr<V>: ToTokens,
+{
     fn into_output(self) -> TokenStream {
         if self.0.is_simple() {
             let values = self.0.simple_output();

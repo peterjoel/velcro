@@ -1,24 +1,24 @@
+use proc_macro2::TokenStream;
+use quote::{quote_spanned, ToTokens, TokenStreamExt};
+use std::marker::PhantomData;
 use syn::parse::{Parse, ParseStream};
-use syn::{Expr, Token};
+use syn::{spanned::Spanned, Expr, Token};
 
-pub enum Value {
-    One(Expr),
-    Many(Expr),
+pub enum Value<V> {
+    One(ValueExpr<V>),
+    Many(ValueIterExpr<V>),
 }
 
-impl Value {
+impl<V> Value<V> {
     pub fn is_simple(&self) -> bool {
         matches!(self, Self::One(_))
     }
-
-    pub fn expr(&self) -> &Expr {
-        match self {
-            Value::One(expr) | Value::Many(expr) => expr,
-        }
-    }
 }
 
-impl Parse for Value {
+impl<V> Parse for Value<V>
+where
+    ValueExpr<V>: Parse,
+{
     fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
         if input.peek(Token![..]) {
             let _: Token![..] = input.parse()?;
@@ -26,5 +26,84 @@ impl Parse for Value {
         } else {
             Ok(Value::One(input.parse()?))
         }
+    }
+}
+
+impl<V> ToTokens for Value<V>
+where
+    ValueExpr<V>: ToTokens,
+    ValueIterExpr<V>: ToTokens,
+{
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        match self {
+            Value::One(expr) => expr.to_tokens(tokens),
+            Value::Many(expr) => expr.to_tokens(tokens),
+        }
+    }
+}
+
+pub struct ValueExpr<W> {
+    expr: Expr,
+    _phantom: PhantomData<W>,
+}
+
+impl<W> Parse for ValueExpr<W> {
+    fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
+        Ok(ValueExpr {
+            expr: input.parse()?,
+            _phantom: PhantomData,
+        })
+    }
+}
+
+pub struct ValueIterExpr<W> {
+    expr: Expr,
+    _phantom: PhantomData<W>,
+}
+
+impl<W> Parse for ValueIterExpr<W> {
+    fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
+        Ok(ValueIterExpr {
+            expr: input.parse()?,
+            _phantom: PhantomData,
+        })
+    }
+}
+
+pub struct Verbatim;
+pub struct ConvertInto;
+
+impl ToTokens for ValueExpr<Verbatim> {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        self.expr.to_tokens(tokens);
+    }
+}
+
+impl ToTokens for ValueExpr<ConvertInto> {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        let expr = &self.expr;
+        let output = quote_spanned! {
+            expr.span() =>
+            std::convert::Into::into(#expr)
+        };
+        tokens.append_all(output);
+    }
+}
+
+impl ToTokens for ValueIterExpr<Verbatim> {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        self.expr.to_tokens(tokens);
+    }
+}
+
+impl ToTokens for ValueIterExpr<ConvertInto> {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        let expr = &self.expr;
+        let output = quote_spanned! {
+            expr.span() =>
+            std::iter::IntoIterator::into_iter(#expr).map(|value| std::convert::Into::into(value))
+
+        };
+        tokens.append_all(output);
     }
 }

@@ -39,6 +39,31 @@
 /// if you don't use the `..` spread operator, you don't pay for it.
 pub use velcro_macros::vec;
 
+/// Works the same as `vec!` except that values may be of any type that can be
+/// converted into the item type via an implementation of `Into`.
+///
+/// The type of the item must be known at compile time, and usually this means an
+/// explicit type annotation is required.
+///
+/// # Usage
+///
+/// ```rust
+/// use velcro::vec_from;
+///
+/// #[derive(Debug, PartialEq)]
+/// struct Foo(u64);
+///
+/// impl From<u64> for Foo {
+///     fn from(other: u64) -> Self {
+///         Foo(other)
+///     }
+/// }
+///
+/// let foos: Vec<Foo> = vec_from![1, 2, Foo(3), ..4..=6, 7];
+/// assert_eq!(foos, vec![Foo(1), Foo(2), Foo(3), Foo(4), Foo(5), Foo(6), Foo(7)]);
+/// ```
+pub use velcro_macros::vec_from;
+
 /// An initializer for `BTreeSet`, allowing for items to be specified individually
 /// or "spread" using the `..` operator.
 ///

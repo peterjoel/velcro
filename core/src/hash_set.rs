@@ -1,18 +1,25 @@
 use crate::seq::SeqInput;
-use crate::value::Value;
+use crate::value::{Value, ValueExpr, ValueIterExpr, Verbatim};
 use proc_macro2::{Ident, Span, TokenStream};
-use quote::quote;
+use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream};
 
-pub struct HashSetInput(SeqInput);
+pub struct HashSetInput<V = Verbatim>(SeqInput<V>);
 
-impl Parse for HashSetInput {
+impl<V> Parse for HashSetInput<V>
+where
+    Value<V>: Parse,
+{
     fn parse(input: ParseStream<'_>) -> syn::parse::Result<Self> {
         Ok(HashSetInput(input.parse()?))
     }
 }
 
-impl HashSetInput {
+impl<V> HashSetInput<V>
+where
+    ValueExpr<V>: ToTokens,
+    ValueIterExpr<V>: ToTokens,
+{
     pub fn into_output(self) -> TokenStream {
         let target = Ident::new("set", Span::call_site());
         let updates = self.0.values().map(|value| match value {
