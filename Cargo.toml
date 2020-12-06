@@ -1,16 +1,16 @@
 [package]
 name = "velcro"
-version = "0.4.0"
+version = "0.4.1"
 authors = ["Peter Hall <peterjoel@gmail.com>"]
 edition = "2018"
 license = "Unlicense OR MIT"
 description = """
-A convenience macro for initializing vectors.
+Convenience macros for initializing vectors, hash maps and other Rust collections.
 """
 documentation = "https://docs.rs/velcro/latest/velcro"
 homepage = "https://github.com/peterjoel/velcro"
 repository = "https://github.com/peterjoel/velcro"
-keywords = ["vec", "vector", "macro"]
+keywords = ["vec", "vector", "macro", "hashmap", "map", "set", "initialize", "literal"]
 categories = ["data-structures", "rust-patterns"]
 
 [dependencies]
