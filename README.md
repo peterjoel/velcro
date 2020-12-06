@@ -25,8 +25,8 @@ let map = hash_map! {
     ..10..20: "as do these",
 };
 
-assert_eq!(map.get(&0).unwrap(), "zero");
-assert_eq!(map.get(&3).unwrap(), "all of these keys have the same value");
-assert_eq!(map.get(&4).unwrap(), "all of these keys have the same value");
-assert_eq!(map.get(&10).unwrap(), "as do these");
+assert_eq!(map.get(&0), Some(&"zero"));
+assert_eq!(map.get(&3), Some(&"all of these keys have the same value"));
+assert_eq!(map.get(&4), Some(&"all of these keys have the same value"));
+assert_eq!(map.get(&10), Some(&"as do these"));
 ```
