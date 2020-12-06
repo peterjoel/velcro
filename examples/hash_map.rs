@@ -17,4 +17,23 @@ fn main() {
         ..'e'..='h': 0,
     };
     assert_eq!(map, lit);
+
+    let other = vec![3, 4, 5];
+    let map2 = hash_map! {
+        0: "zero",
+        1: "one",
+        ..other: "all of these keys have the same value",
+        ..10..20: "as do these",
+    };
+
+    assert_eq!(map2.get(&0).unwrap(), &"zero");
+    assert_eq!(
+        map2.get(&3).unwrap(),
+        &"all of these keys have the same value"
+    );
+    assert_eq!(
+        map2.get(&4).unwrap(),
+        &"all of these keys have the same value"
+    );
+    assert_eq!(map2.get(&10).unwrap(), &"as do these");
 }

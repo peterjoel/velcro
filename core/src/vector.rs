@@ -31,7 +31,7 @@ where
     ValueIterExpr<V>: ToTokens,
 {
     fn parse(input: ParseStream<'_>) -> parse::Result<Self> {
-        Ok(if find_semicolon_separator(input) {
+        Ok(if has_semicolon_separator(input) {
             VecInput::Repeat(input.parse()?)
         } else {
             VecInput::Seq(input.parse()?)
@@ -39,7 +39,7 @@ where
     }
 }
 
-fn find_semicolon_separator(input: ParseStream) -> bool {
+fn has_semicolon_separator(input: ParseStream) -> bool {
     input
         .step(|cursor| {
             let mut rest = *cursor;

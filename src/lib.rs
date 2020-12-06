@@ -79,6 +79,32 @@ pub use velcro_macros::vec_from;
 ///```
 pub use velcro_macros::btree_set;
 
+/// An initializer for `BTreeSet` that works the same as `btree_set!` except that
+/// values can be of any type that can be converted into the collection's item type.
+///
+/// The type of the item must be known at compile time, and usually this means an
+/// explicit type annotation is required.
+///
+/// # Usage
+///
+/// ```rust
+/// # use std::collections::BTreeSet;
+/// use velcro::{btree_set, btree_set_from};
+///
+/// #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+/// struct Foo(u64);
+///
+/// impl From<u64> for Foo {
+///     fn from(other: u64) -> Self {
+///         Foo(other)
+///     }
+/// }
+///
+/// let foos: BTreeSet<Foo> = btree_set_from![1, 2, Foo(3), ..4..=6, 7];
+/// assert_eq!(foos, btree_set![Foo(1), Foo(2), Foo(3), Foo(4), Foo(5), Foo(6), Foo(7)]);
+///```
+pub use velcro_macros::btree_set_from;
+
 /// An initializer for `HashSet`, allowing for items to be specified individually
 /// or "spread" using the `..` operator.
 ///
@@ -94,6 +120,33 @@ pub use velcro_macros::btree_set;
 ///```
 pub use velcro_macros::hash_set;
 
+/// An initializer for `HashSet` that works the same as `hash_set!` except that
+/// values can be of any type that can be converted into the collection's item
+/// type via an `Into` implementation.
+///
+/// The type of the item must be known at compile time, and usually this means an
+/// explicit type annotation is required.
+///
+/// # Usage
+///
+/// ```rust
+/// # use std::collections::HashSet;
+/// use velcro::{hash_set, hash_set_from};
+///
+/// #[derive(Debug, PartialEq, Eq, Hash)]
+/// struct Foo(u64);
+///
+/// impl From<u64> for Foo {
+///     fn from(other: u64) -> Self {
+///         Foo(other)
+///     }
+/// }
+///
+/// let foos: HashSet<Foo> = hash_set_from![1, 2, Foo(3), ..4..=6, 7];
+/// assert_eq!(foos, hash_set![Foo(1), Foo(2), Foo(3), Foo(4), Foo(5), Foo(6), Foo(7)]);
+///```
+pub use velcro_macros::hash_set_from;
+
 /// An initializer for `HashMap`, allowing for entries to be specified individually
 /// or for the same value to be given to multiple keys using the `..` operator.
 ///
@@ -102,17 +155,130 @@ pub use velcro_macros::hash_set;
 /// ```rust
 /// # use std::collections::HashMap;
 /// use velcro::hash_map;
-/// let mut map = HashMap::new();
-/// map.insert('a', 0);
-/// map.insert('b', 1);
-/// map.insert('c', 1);
-/// map.insert('d', 1);
-/// map.insert('e', 2);
-/// map.insert('f', 3);
+/// let mut map1 = HashMap::new();
+/// map1.insert('a', 0);
+/// map1.insert('b', 1);
+/// map1.insert('c', 1);
+/// map1.insert('d', 1);
+/// map1.insert('e', 1);
+/// map1.insert('f', 2);
 ///
-/// assert_eq!(hash_map!{ 'a': 0, 'b'..='d': 1, 'e': 2, 'f': 3}, map);
+/// let map2 = hash_map! {
+///     'a': 0,
+///     ..'b'..='e': 1,
+///     'f': 2
+/// };
+///
+/// assert_eq!(map1, map2);
 ///```
 pub use velcro_macros::hash_map;
+
+/// An initializer for `HashMap` that works the same as `hash_map!` except that
+/// values can be of any type that can be converted into the collection's item
+/// type via an `Into` implementation.
+///
+/// The type of the item must be known at compile time, and usually this means an
+/// explicit type annotation is required.
+///
+/// # Usage
+///
+/// ```rust
+/// # use std::collections::HashMap;
+/// use velcro::hash_map_from;
+///
+/// #[derive(Debug, PartialEq, Eq, Hash)]
+/// struct Foo(u64);
+///
+/// impl From<u64> for Foo {
+///     fn from(other: u64) -> Self {
+///         Foo(other)
+///     }
+/// }
+///
+/// let mut map1 = HashMap::new();
+/// map1.insert('a', Foo(0));
+/// map1.insert('b', Foo(1));
+/// map1.insert('c', Foo(1));
+/// map1.insert('d', Foo(1));
+/// map1.insert('e', Foo(1));
+/// map1.insert('f', Foo(2));
+///
+/// let map2: HashMap<char, Foo> = hash_map_from! {
+///     'a': 0,
+///     ..'b'..='e': 1,
+///     'f': 2
+/// };
+///
+/// assert_eq!(map1, map2);
+///```
+pub use velcro_macros::hash_map_from;
+
+/// An initializer for `BTreeMap`, allowing for entries to be specified individually
+/// or for the same value to be given to multiple keys using the `..` operator.
+///
+/// # Usage
+///
+/// ```rust
+/// # use std::collections::BTreeMap;
+/// use velcro::btree_map;
+///
+/// let mut map1 = BTreeMap::new();
+/// map1.insert('a', 0);
+/// map1.insert('b', 1);
+/// map1.insert('c', 1);
+/// map1.insert('d', 1);
+/// map1.insert('e', 1);
+/// map1.insert('f', 2);
+///
+/// let map2 = btree_map! {
+///     'a': 0,
+///     ..'b'..='e': 1,
+///     'f': 2
+/// };
+///
+/// assert_eq!(map1, map2);
+///```
+pub use velcro_macros::btree_map;
+
+/// An initializer for `BTreeMap` that works the same as `btree_map!` except that
+/// values can be of any type that can be converted into the collection's item
+/// type via an `Into` implementation.
+///
+/// The type of the item must be known at compile time, and usually this means an
+/// explicit type annotation is required.
+///
+/// # Usage
+///
+/// ```rust
+/// # use std::collections::BTreeMap;
+/// use velcro::btree_map_from;
+///
+/// #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+/// struct Foo(u64);
+///
+/// impl From<u64> for Foo {
+///     fn from(other: u64) -> Self {
+///         Foo(other)
+///     }
+/// }
+///
+/// let mut map1 = BTreeMap::new();
+/// map1.insert('a', Foo(0));
+/// map1.insert('b', Foo(1));
+/// map1.insert('c', Foo(1));
+/// map1.insert('d', Foo(1));
+/// map1.insert('e', Foo(1));
+/// map1.insert('f', Foo(2));
+///
+/// let map2: BTreeMap<char, Foo> = btree_map_from! {
+///     'a': 0,
+///     ..'b'..='e': 1,
+///     'f': 2
+/// };
+///
+/// assert_eq!(map1, map2);
+///```
+pub use velcro_macros::btree_map_from;
 
 /// Creates an iterator, over the given values. Other collections and iterators
 /// may also be interspersed, or "spread", using the `..` operator.
@@ -132,3 +298,25 @@ pub use velcro_macros::hash_map;
 /// assert_eq!(iter![0, 1, ..2..=5, 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
 ///```
 pub use velcro_macros::iter;
+
+/// Creates an iterator, over the given values. Works the same as `iter` except that values
+/// may be any type that can be converted to the iterator item type via an `Into`
+/// implementation.
+///
+/// # Usage
+///
+/// ```rust
+/// use velcro::iter;
+///
+/// #[derive(Debug, PartialEq)]
+/// struct Foo(u64);
+///
+/// impl From<u64> for Foo {
+///     fn from(other: u64) -> Self {
+///         Foo(other)
+///     }
+/// }
+///
+/// assert_eq!(iter![0, 1, ..2..=5, 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
+///```
+pub use velcro_macros::iter_from;

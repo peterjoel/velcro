@@ -20,10 +20,13 @@ pub use crate::{
 use proc_macro2::TokenStream;
 use syn::parse::Result;
 
+/// Trait to be implemented for parsing syntax that would be rejected by syn::Parse
 pub trait ParseRaw: Sized {
     fn parse_raw(input: TokenStream) -> Result<Self>;
 }
 
+/// Used in a similar way to `syn::parse_macro_input` macro, but for types that implement
+/// `ParseRaw` instead of `syn::parse::Parse`.
 #[macro_export]
 macro_rules! parse_raw_macro_input {
     ($tokenstream: ident as $ty: ty) => {
