@@ -10,8 +10,8 @@
 /// ```rust
 /// use velcro::vec;
 ///
-/// assert_eq!(vec![..0..7], vec![0, 1, 2, 3, 4, 5, 6]);
-/// assert_eq!(vec![0, 1, ..2..7], vec![0, 1, 2, 3, 4, 5, 6]);
+/// assert_eq!(vec![..(0..7)], vec![0, 1, 2, 3, 4, 5, 6]);
+/// assert_eq!(vec![0, 1, ..(2..7)], vec![0, 1, 2, 3, 4, 5, 6]);
 ///
 /// let other = vec![3, 4, 5];
 /// assert_eq!(vec![0, 1, 2, ..other, 6], vec![0, 1, 2, 3, 4, 5, 6]);
@@ -59,7 +59,7 @@ pub use velcro_macros::vec;
 ///     }
 /// }
 ///
-/// let foos: Vec<Foo> = vec_from![1, 2, Foo(3), ..4..=6, 7];
+/// let foos: Vec<Foo> = vec_from![1, 2, Foo(3), ..(4..=6), 7];
 /// assert_eq!(foos, vec![Foo(1), Foo(2), Foo(3), Foo(4), Foo(5), Foo(6), Foo(7)]);
 /// ```
 pub use velcro_macros::vec_from;
@@ -74,8 +74,8 @@ pub use velcro_macros::vec_from;
 /// use velcro::btree_set;
 /// let set: BTreeSet<_> = (0..7).into_iter().collect();
 ///
-/// assert_eq!(btree_set![..0..7], set);
-/// assert_eq!(btree_set![0, 1, ..2..7], set);
+/// assert_eq!(btree_set![..(0..7)], set);
+/// assert_eq!(btree_set![0, 1, ..(2..7)], set);
 ///```
 pub use velcro_macros::btree_set;
 
@@ -100,7 +100,7 @@ pub use velcro_macros::btree_set;
 ///     }
 /// }
 ///
-/// let foos: BTreeSet<Foo> = btree_set_from![1, 2, Foo(3), ..4..=6, 7];
+/// let foos: BTreeSet<Foo> = btree_set_from![1, 2, Foo(3), ..(4..=6), 7];
 /// assert_eq!(foos, btree_set![Foo(1), Foo(2), Foo(3), Foo(4), Foo(5), Foo(6), Foo(7)]);
 ///```
 pub use velcro_macros::btree_set_from;
@@ -115,8 +115,8 @@ pub use velcro_macros::btree_set_from;
 /// use velcro::hash_set;
 /// let set: HashSet<_> = (0..7).into_iter().collect();
 ///
-/// assert_eq!(hash_set![..0..7], set);
-/// assert_eq!(hash_set![0, 1, ..2..7], set);
+/// assert_eq!(hash_set![..(0..7)], set);
+/// assert_eq!(hash_set![0, 1, ..(2..7)], set);
 ///```
 pub use velcro_macros::hash_set;
 
@@ -142,7 +142,7 @@ pub use velcro_macros::hash_set;
 ///     }
 /// }
 ///
-/// let foos: HashSet<Foo> = hash_set_from![1, 2, Foo(3), ..4..=6, 7];
+/// let foos: HashSet<Foo> = hash_set_from![1, 2, Foo(3), ..(4..=6), 7];
 /// assert_eq!(foos, hash_set![Foo(1), Foo(2), Foo(3), Foo(4), Foo(5), Foo(6), Foo(7)]);
 ///```
 pub use velcro_macros::hash_set_from;
@@ -291,11 +291,11 @@ pub use velcro_macros::btree_map_from;
 ///
 /// assert_eq!(iter![..vec, 4, 5, 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
 ///
-/// for x in iter![0, 1, ..2..=5, 6] {
+/// for x in iter![0, 1, ..(2..=5), 6] {
 ///    println!("x = {}", x);   
 /// }
 ///
-/// assert_eq!(iter![0, 1, ..2..=5, 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
+/// assert_eq!(iter![0, 1, ..(2..=5), 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
 ///```
 pub use velcro_macros::iter;
 
@@ -317,6 +317,6 @@ pub use velcro_macros::iter;
 ///     }
 /// }
 ///
-/// assert_eq!(iter![0, 1, ..2..=5, 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
+/// assert_eq!(iter![0, 1, ..(2..=5), 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
 ///```
 pub use velcro_macros::iter_from;

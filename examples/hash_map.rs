@@ -23,7 +23,7 @@ fn main() {
         0: "zero",
         1: "one",
         ..other: "all of these keys have the same value",
-        ..10..20: "as do these",
+        ..(10..20): "as do these",
     };
 
     assert_eq!(map2.get(&0).unwrap(), &"zero");

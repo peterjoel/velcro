@@ -12,8 +12,8 @@ the `std` macro is supported, but it also supports spreading values with `..`.
 ```
 use velcro::{hash_map, vec};
 
-assert_eq!(vec![..0..7], vec![0, 1, 2, 3, 4, 5, 6]);
-assert_eq!(vec![0, 1, ..2..7], vec![0, 1, 2, 3, 4, 5, 6]);
+assert_eq!(vec![..(0..7)], vec![0, 1, 2, 3, 4, 5, 6]);
+assert_eq!(vec![0, 1, ..(2..7)], vec![0, 1, 2, 3, 4, 5, 6]);
 
 let other = vec![3, 4, 5];
 assert_eq!(vec![0, 1, 2, ..other, 6], vec![0, 1, 2, 3, 4, 5, 6]);
@@ -22,7 +22,7 @@ let map = hash_map! {
     0: "zero",
     1: "one",
     ..other: "all of these keys have the same value",
-    ..10..20: "as do these",
+    ..(10..20): "as do these",
 };
 
 assert_eq!(map.get(&0), Some(&"zero"));

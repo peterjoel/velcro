@@ -2,7 +2,7 @@ use proc_macro2::TokenStream;
 use quote::{quote_spanned, ToTokens, TokenStreamExt};
 use std::marker::PhantomData;
 use syn::parse::{self, Parse, ParseStream};
-use syn::{spanned::Spanned, Expr, Token};
+use syn::{spanned::Spanned, Expr, ExprParen, Token};
 
 pub enum Value<V> {
     One(ValueExpr<V>),
@@ -90,15 +90,25 @@ impl ToTokens for ValueExpr<ConvertInto> {
     }
 }
 
+// If there is a Range in parentheses, strip the parentheses to avoid compiler warnings.
+// Leave the parentheses for other types of expression.
+fn remove_range_parens(expression: &Expr) -> &Expr {
+    match expression {
+        Expr::Paren(ExprParen { expr, .. }) if matches!(**expr, Expr::Range(_)) => expr,
+        other => other,
+    }
+}
+
 impl ToTokens for ValueIterExpr<Verbatim> {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        self.expr.to_tokens(tokens);
+        let expr = remove_range_parens(&self.expr);
+        expr.to_tokens(tokens);
     }
 }
 
 impl ToTokens for ValueIterExpr<ConvertInto> {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        let expr = &self.expr;
+        let expr = remove_range_parens(&self.expr);
         let output = quote_spanned! {
             expr.span() =>
             std::iter::IntoIterator::into_iter(#expr).map(|value| std::convert::Into::into(value))
