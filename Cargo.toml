@@ -1,6 +1,6 @@
 [package]
 name = "velcro"
-version = "0.4.2"
+version = "0.4.3"
 authors = ["Peter Hall <peterjoel@gmail.com>"]
 edition = "2018"
 license = "Unlicense OR MIT"
@@ -14,4 +14,4 @@ keywords = [ "vector", "macro", "hashmap", "literal"]
 categories = ["data-structures", "rust-patterns"]
 
 [dependencies]
-velcro_macros = { version = "=0.4.0", path = "macros" }
+velcro_macros = { version = "=0.4.1", path = "macros" }
