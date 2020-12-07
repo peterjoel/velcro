@@ -4,7 +4,7 @@ A set of macros for conveniently initializing `Vec`, `HashMap`, `HashSet`, `BTre
 `BTreeSet` and iterators. All of the macros support the `..` operator which "spreads"
 the values of another collection or iterator into the collection being initialized.
 
-`veclro::vec` is drop-in replacement for `std::vec!`. All functionality of
+`velcro::vec!` is a drop-in replacement for `std::vec!`. All functionality of
 the `std` macro is supported, but it also supports spreading values with `..`.
 
 ## Examples
