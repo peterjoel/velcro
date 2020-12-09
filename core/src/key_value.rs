@@ -1,6 +1,6 @@
 use crate::value::{Value, ValueExpr};
 use crate::ParseRaw;
-use proc_macro2::{TokenStream, TokenTree};
+use proc_macro2::{Spacing, TokenStream, TokenTree};
 use quote::TokenStreamExt;
 use std::marker::PhantomData;
 use syn::parse::Parser;
@@ -31,6 +31,7 @@ impl<V> KeyValueSeq<V> {
         self.key_values.iter()
     }
 
+    /// Returns true if the sequence contains no spread values
     pub fn is_simple(&self) -> bool {
         self.key_values().all(|kv| kv.key().is_simple())
     }
@@ -63,10 +64,17 @@ where
 {
     let mut it = tokens.into_iter();
     let mut key = TokenStream::new();
-    while let Some(tt) = it.next() {
+    while let Some(mut tt) = it.next() {
         if let TokenTree::Punct(p) = &tt {
             if p.as_char() == ':' {
-                break;
+                // Stop when we hit a `:` unless it's actually a `::`
+                if p.spacing() == Spacing::Alone {
+                    break;
+                } else {
+                    key.append(tt);
+                    // safe to unwrap because preceding ':' is not alone
+                    tt = it.next().unwrap();
+                }
             }
         }
         key.append(tt);

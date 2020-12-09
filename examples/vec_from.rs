@@ -1,7 +1,7 @@
 use velcro::vec_from;
 
 #[derive(Debug, PartialEq)]
-struct Foo(i32);
+pub struct Foo(i32);
 
 impl From<i32> for Foo {
     fn from(other: i32) -> Self {
