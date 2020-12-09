@@ -30,7 +30,12 @@ impl<V> KeyValueSeq<V> {
     pub fn key_values(&self) -> impl ExactSizeIterator<Item = &KeyValue<V>> {
         self.key_values.iter()
     }
+
+    pub fn is_simple(&self) -> bool {
+        self.key_values().all(|kv| kv.key().is_simple())
+    }
 }
+
 impl<V> ParseRaw for KeyValueSeq<V>
 where
     Value<V>: Parse,

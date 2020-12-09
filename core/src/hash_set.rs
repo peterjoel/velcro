@@ -21,8 +21,19 @@ where
     ValueIterExpr<V>: ToTokens,
 {
     pub fn into_output(self) -> TokenStream {
+        let values = self.0.values();
+        let initial_capacity = if self.0.is_simple() {
+            values.len()
+        } else {
+            // A simple heuristic for the initial capacity. At this point we can guess that
+            // the output length is likely to be greater than the number of values, since
+            // at least one of the values is an iterator. This will reduce the number of
+            // allocations in common cases, while not massively over-allocating when the
+            // collection is small.
+            16.max(values.len().next_power_of_two() * 2)
+        };
         let target = Ident::new("set", Span::call_site());
-        let updates = self.0.values().map(|value| match value {
+        let updates = values.map(|value| match value {
             Value::One(expr) => quote! {
                 #target.insert(#expr);
             },
@@ -33,7 +44,7 @@ where
             },
         });
         quote! {{
-            let mut #target = ::std::collections::HashSet::new();
+            let mut #target = ::std::collections::HashSet::with_capacity(#initial_capacity);
             #(#updates)*
             #target
         }}

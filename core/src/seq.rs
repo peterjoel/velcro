@@ -28,6 +28,7 @@ where
     ValueExpr<V>: ToTokens,
     ValueIterExpr<V>: ToTokens,
 {
+    /// Returns true if the sequence contains no spread values
     pub fn is_simple(&self) -> bool {
         self.values.iter().all(Value::is_simple)
     }

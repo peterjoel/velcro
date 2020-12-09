@@ -10,6 +10,7 @@ pub enum Value<V> {
 }
 
 impl<V> Value<V> {
+    /// Returns true if the value is a simple expression, not using the spread operator
     pub fn is_simple(&self) -> bool {
         matches!(self, Self::One(_))
     }

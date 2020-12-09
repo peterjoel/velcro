@@ -14,6 +14,17 @@ where
 {
     pub fn into_output(self) -> TokenStream {
         let target = Ident::new("map", Span::call_site());
+        let key_values = self.0.key_values();
+        let initial_capacity = if self.0.is_simple() {
+            key_values.len()
+        } else {
+            // A simple heuristic for the initial capacity. At this point we can guess that
+            // the output length is likely to be greater than the number of values, since
+            // at least one of the values is an iterator. This will reduce the number of
+            // allocations in common cases, while not massively over-allocating when the
+            // collection is small.
+            16.max(key_values.len().next_power_of_two() * 2)
+        };
         let updates = self.0.key_values().map(|kv| {
             let key = kv.key();
             let value = kv.value();
@@ -29,7 +40,7 @@ where
             }
         });
         quote! {{
-            let mut #target = ::std::collections::HashMap::new();
+            let mut #target = ::std::collections::HashMap::with_capacity(#initial_capacity);
             #(#updates)*
             #target
         }}

@@ -137,7 +137,7 @@ where
             // allocations in common cases, while not massively over-allocating when the
             // collection is small.
             let initial_capacity = 16.max(values.len().next_power_of_two() * 2);
-            let updates = self.0.values().map(|value| match value {
+            let updates = values.map(|value| match value {
                 Value::One(expr) => quote! {
                     #target.push(#expr);
                 },
