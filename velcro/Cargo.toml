@@ -1,0 +1,17 @@
+[package]
+name = "velcro"
+version = "0.4.4"
+authors = ["Peter Hall <peterjoel@gmail.com>"]
+edition = "2018"
+license = "Unlicense OR MIT"
+description = """
+Convenience macros for initializing vectors, hash maps and other Rust collections.
+"""
+documentation = "https://docs.rs/velcro/latest/velcro"
+homepage = "https://github.com/peterjoel/velcro"
+repository = "https://github.com/peterjoel/velcro"
+keywords = [ "vector", "macro", "hashmap", "literal"]
+categories = ["data-structures", "rust-patterns"]
+
+[dependencies]
+velcro_macros = { version = "=0.4.2", path = "../macros" }
