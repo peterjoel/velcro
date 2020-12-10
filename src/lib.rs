@@ -147,6 +147,48 @@ pub use velcro_macros::hash_set;
 ///```
 pub use velcro_macros::hash_set_from;
 
+/// An initializer for `LinkedList`, allowing for items to be specified individually
+/// or "spread" using the `..` operator.
+///
+/// # Usage
+///
+/// ```rust
+/// # use std::collections::LinkedList;
+/// use velcro::linked_list;
+/// let list: LinkedList<_> = (0..7).into_iter().collect();
+///
+/// assert_eq!(linked_list![..(0..7)], list);
+/// assert_eq!(linked_list![0, 1, ..(2..7)], list);
+///```
+pub use velcro_macros::linked_list;
+
+/// An initializer for `LinkedList` that works the same as `linked_list!` except that
+/// values can be of any type that can be converted into the collection's item
+/// type via an `Into` implementation.
+///
+/// The type of the item must be known at compile time, and usually this means an
+/// explicit type annotation is required.
+///
+/// # Usage
+///
+/// ```rust
+/// # use std::collections::LinkedList;
+/// use velcro::{linked_list, linked_list_from};
+///
+/// #[derive(Debug, PartialEq, Eq, Hash)]
+/// struct Foo(u64);
+///
+/// impl From<u64> for Foo {
+///     fn from(other: u64) -> Self {
+///         Foo(other)
+///     }
+/// }
+///
+/// let foos: LinkedList<Foo> = linked_list_from![1, 2, Foo(3), ..(4..=6), 7];
+/// assert_eq!(foos, linked_list![Foo(1), Foo(2), Foo(3), Foo(4), Foo(5), Foo(6), Foo(7)]);
+///```
+pub use velcro_macros::linked_list_from;
+
 /// An initializer for `HashMap`, allowing for entries to be specified individually
 /// or for the same value to be given to multiple keys using the `..` operator.
 ///
