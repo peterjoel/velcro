@@ -2,7 +2,7 @@ use proc_macro::TokenStream;
 use syn::parse_macro_input;
 use velcro_core::{
     parse_raw_macro_input, BTreeMapInput, BTreeSetInput, ConvertInto, HashMapInput, HashSetInput,
-    IterInput, VecInput,
+    IterInput, LinkedListInput, VecInput,
 };
 
 #[proc_macro]
@@ -20,6 +20,12 @@ pub fn btree_set(input: TokenStream) -> TokenStream {
 #[proc_macro]
 pub fn hash_set(input: TokenStream) -> TokenStream {
     let output = parse_macro_input!(input as HashSetInput).into_output();
+    TokenStream::from(output)
+}
+
+#[proc_macro]
+pub fn linked_list(input: TokenStream) -> TokenStream {
+    let output = parse_macro_input!(input as LinkedListInput).into_output();
     TokenStream::from(output)
 }
 
@@ -56,6 +62,12 @@ pub fn btree_set_from(input: TokenStream) -> TokenStream {
 #[proc_macro]
 pub fn hash_set_from(input: TokenStream) -> TokenStream {
     let output = parse_macro_input!(input as HashSetInput<ConvertInto>).into_output();
+    TokenStream::from(output)
+}
+
+#[proc_macro]
+pub fn linked_list_from(input: TokenStream) -> TokenStream {
+    let output = parse_macro_input!(input as LinkedListInput<ConvertInto>).into_output();
     TokenStream::from(output)
 }
 
