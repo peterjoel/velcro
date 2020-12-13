@@ -3,7 +3,7 @@ use crate::value::{Value, ValueExpr, ValueIterExpr, Verbatim};
 use crate::ParseRaw;
 use proc_macro2::{Ident, Span, TokenStream};
 use quote::{quote, ToTokens};
-use syn::parse::{self};
+use syn::parse;
 
 pub struct HashMapInput<V = Verbatim>(KeyValueSeq<V>);
 

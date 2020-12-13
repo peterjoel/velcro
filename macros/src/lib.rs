@@ -2,7 +2,7 @@ use proc_macro::TokenStream;
 use syn::parse_macro_input;
 use velcro_core::{
     parse_raw_macro_input, BTreeMapInput, BTreeSetInput, ConvertInto, HashMapInput, HashSetInput,
-    IterInput, LinkedListInput, VecInput,
+    IterInput, LinkedListInput, MapIterInput, VecInput,
 };
 
 #[proc_macro]
@@ -48,6 +48,12 @@ pub fn iter(input: TokenStream) -> TokenStream {
 }
 
 #[proc_macro]
+pub fn map_iter(input: TokenStream) -> TokenStream {
+    let output = parse_raw_macro_input!(input as MapIterInput).into_output();
+    TokenStream::from(output)
+}
+
+#[proc_macro]
 pub fn vec_from(input: TokenStream) -> TokenStream {
     let output = parse_macro_input!(input as VecInput<ConvertInto>).into_output();
     TokenStream::from(output)
@@ -74,6 +80,12 @@ pub fn linked_list_from(input: TokenStream) -> TokenStream {
 #[proc_macro]
 pub fn iter_from(input: TokenStream) -> TokenStream {
     let output = parse_macro_input!(input as IterInput<ConvertInto>).into_output();
+    TokenStream::from(output)
+}
+
+#[proc_macro]
+pub fn map_iter_from(input: TokenStream) -> TokenStream {
+    let output = parse_raw_macro_input!(input as MapIterInput<ConvertInto>).into_output();
     TokenStream::from(output)
 }
 

@@ -5,43 +5,44 @@ use proc_macro2::{Ident, Span, TokenStream};
 use quote::{quote, ToTokens};
 use syn::parse;
 
-pub struct BTreeMapInput<V = Verbatim>(KeyValueSeq<V>);
+pub struct MapIterInput<V = Verbatim>(KeyValueSeq<V>);
 
-impl<V> BTreeMapInput<V>
-where
-    ValueExpr<V>: ToTokens,
-    ValueIterExpr<V>: ToTokens,
-{
-    pub fn into_output(self) -> TokenStream {
-        let target = Ident::new("map", Span::call_site());
-        let updates = self.0.key_values().map(|kv| {
-            let key = kv.key();
-            let value = kv.value();
-            match key {
-                Value::One(expr) => quote! {
-                    #target.insert(#expr, #value);
-                },
-                Value::Many(expr) => quote! {
-                    for key in #expr {
-                        #target.insert(key, #value);
-                    }
-                },
-            }
-        });
-        quote! {{
-            let mut #target = ::std::collections::BTreeMap::new();
-            #(#updates)*
-            #target
-        }}
-    }
-}
-
-impl<V> ParseRaw for BTreeMapInput<V>
+impl<V> ParseRaw for MapIterInput<V>
 where
     ValueExpr<V>: ToTokens,
     ValueIterExpr<V>: ToTokens,
 {
     fn parse_raw(input: TokenStream) -> parse::Result<Self> {
-        Ok(BTreeMapInput(KeyValueSeq::parse_raw(input)?))
+        Ok(MapIterInput(KeyValueSeq::parse_raw(input)?))
+    }
+}
+
+impl<V> MapIterInput<V>
+where
+    ValueExpr<V>: ToTokens,
+    ValueIterExpr<V>: ToTokens,
+{
+    pub fn into_output(self) -> TokenStream {
+        let target = Ident::new("it", Span::call_site());
+        let updates = self.0.key_values().map(|kv| {
+            let key = kv.key();
+            let value = kv.value();
+            match key {
+                Value::One(expr) => quote! {
+                    let #target = #target.chain(::std::iter::once((#expr, #value)));
+                },
+                Value::Many(expr) => quote! {
+                    let #target = #target.chain(
+                        ::std::iter::IntoIterator::into_iter(#expr)
+                            .zip(::std::iter::repeat(#value))
+                    );
+                },
+            }
+        });
+        quote! {{
+            let #target = ::std::iter::empty();
+            #(#updates)*
+            #target
+        }}
     }
 }

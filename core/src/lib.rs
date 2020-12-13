@@ -5,6 +5,7 @@ mod hash_set;
 mod iter;
 mod key_value;
 mod linked_list;
+mod map_iter;
 mod seq;
 mod value;
 mod vector;
@@ -16,6 +17,7 @@ pub use crate::{
     hash_set::HashSetInput,
     iter::IterInput,
     linked_list::LinkedListInput,
+    map_iter::MapIterInput,
     value::{ConvertInto, Verbatim},
     vector::VecInput,
 };

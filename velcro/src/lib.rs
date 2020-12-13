@@ -362,3 +362,75 @@ pub use velcro_macros::iter;
 /// assert_eq!(iter![0, 1, ..(2..=5), 6].collect::<Vec<_>>(), vec![0, 1, 2, 3, 4, 5, 6]);
 ///```
 pub use velcro_macros::iter_from;
+
+/// Creates an iterator over pairs of values, expressed with map-like syntax.
+/// Other collections and iterators may also be interspersed, or "spread", using the
+/// `..` operator.
+///
+/// # Usage
+///
+/// ```rust
+/// use velcro::map_iter;
+///
+/// let vec = vec![0, 1, 2, 3];
+///
+/// for (key, value) in map_iter![0: "a", 1: "b", ..(2..=5): "c"] {
+///    println!("{} = {}", key, value);
+/// }
+///
+/// assert_eq!(
+///     map_iter! {
+///         0: "a",
+///         1: "b",
+///         ..(2..=5): "c"
+///     }.collect::<Vec<_>>(),
+///     vec![(0, "a"), (1, "b"), (2, "c"), (3, "c"), (4, "c"), (5, "c")]
+/// );
+///```
+///
+/// A typical use-case for `map_iter` is to collect into a third party map
+/// implementation, not supported by velcro, while still being able to use the
+/// velcro spread operator.
+///
+/// For example, `IndexMap` from the `indexmap` crate:
+/// ```
+/// use velcro::map_iter;
+/// use indexmap::map::IndexMap;
+///
+/// let map: IndexMap<_, _> = map_iter! {
+///         ..(0..10): 100,
+///         1: 200,
+///         ..(3..5): 300
+///     }
+///     .collect();
+/// assert_eq!(map.get(&0).unwrap(), &100);
+/// assert_eq!(map.get(&1).unwrap(), &200);
+/// assert_eq!(map.get(&2).unwrap(), &100);
+/// assert_eq!(map.get(&3).unwrap(), &300);
+/// ```
+pub use velcro_macros::map_iter;
+
+/// Creates an iterator over pairs of values in the same way as `map_iter` except
+/// that values are converted into the expected type using an `Into` implementation.
+///
+/// # Usage
+///
+/// ```rust
+/// use velcro::map_iter_from;
+///
+/// assert_eq!(
+///     map_iter_from! {
+///         0: "a",
+///         1: "b",
+///         ..(2..=5): "c"
+///     }.collect::<Vec<(i64, String)>>(),
+///     vec![
+///         (0, String::from("a")),
+///         (1, String::from("b")),
+///         (2, String::from("c")),
+///         (3, String::from("c")),
+///         (4, String::from("c")),
+///         (5, String::from("c"))
+///     ]);
+///```
+pub use velcro_macros::map_iter_from;

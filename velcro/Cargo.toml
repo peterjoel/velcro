@@ -15,3 +15,6 @@ categories = ["data-structures", "rust-patterns"]
 
 [dependencies]
 velcro_macros = { version = "=0.4.2", path = "../macros" }
+
+[dev-dependencies]
+indexmap = "1.6.0"
