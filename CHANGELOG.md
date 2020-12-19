@@ -2,6 +2,11 @@
 
 All notable changes by version.
 
+## v0.5.0
+
+- Add `linked_list!` and `linked_list_from` macros
+- Add `map_iter!` and `map_iter_from!` macros
+
 ## v0.4.4
 
 - Add heuristic for calculating `HashSet` and `HashMap` capacity
