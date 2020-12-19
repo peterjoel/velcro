@@ -207,7 +207,7 @@ pub use velcro_macros::linked_list_from;
 ///
 /// let map2 = hash_map! {
 ///     'a': 0,
-///     ..'b'..='e': 1,
+///     ..('b'..='e'): 1,
 ///     'f': 2
 /// };
 ///
@@ -247,7 +247,7 @@ pub use velcro_macros::hash_map;
 ///
 /// let map2: HashMap<char, Foo> = hash_map_from! {
 ///     'a': 0,
-///     ..'b'..='e': 1,
+///     ..('b'..='e'): 1,
 ///     'f': 2
 /// };
 ///
@@ -274,7 +274,7 @@ pub use velcro_macros::hash_map_from;
 ///
 /// let map2 = btree_map! {
 ///     'a': 0,
-///     ..'b'..='e': 1,
+///     ..('b'..='e'): 1,
 ///     'f': 2
 /// };
 ///
@@ -314,7 +314,7 @@ pub use velcro_macros::btree_map;
 ///
 /// let map2: BTreeMap<char, Foo> = btree_map_from! {
 ///     'a': 0,
-///     ..'b'..='e': 1,
+///     ..('b'..='e'): 1,
 ///     'f': 2
 /// };
 ///

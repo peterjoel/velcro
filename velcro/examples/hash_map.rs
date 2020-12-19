@@ -13,8 +13,8 @@ fn main() {
     map.insert('h', 0);
     let lit = hash_map! {
         'a': 0,
-        ..'b'..='d': 1,
-        ..'e'..='h': 0,
+        ..('b'..='d'): 1,
+        ..('e'..='h'): 0,
     };
     assert_eq!(map, lit);
 
