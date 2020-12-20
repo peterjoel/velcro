@@ -42,9 +42,9 @@ for issues that are reasonably complete in their description. Feel free to ask f
 help or clarification by leaving comments on the issue.
 
 This project uses Travis for continuous integration. Please check that your changes
-build and all of the tests pass:
+build without errors and all of the tests pass:
 
-- https://travis-ci.com/github/peterjoel/velcro
+- [https://travis-ci.com/github/peterjoel/velcro](https://travis-ci.com/github/peterjoel/velcro)
 
 ## Help
 
