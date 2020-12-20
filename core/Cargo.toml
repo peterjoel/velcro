@@ -20,3 +20,6 @@ categories = ["data-structures", "rust-patterns"]
 proc-macro2 = "1"
 quote = "1"
 syn = { version = "1", features = ["full"] }
+
+[dev-dependencies]
+syn = { version = "1", features = ["extra-traits"] }

@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.com/peterjoel/velcro.svg?branch=main)](https://travis-ci.com/peterjoel/velcro)
 
-[Examples](#Examples) | [Contributing](#Contributing) | [Help](#Help)
-
 A set of macros for conveniently initializing collections from Rust's `std` and iterators. All of the macros support the unary `..` operator which "spreads"
 the values of another collection or iterator.
 
