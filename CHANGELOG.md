@@ -4,6 +4,11 @@ All notable changes by version.
 
 ## v0.5.0
 
+- Improve docs and core tests
+- Update README
+
+## v0.5.0
+
 - Add `linked_list!` and `linked_list_from` macros
 - Add `map_iter!` and `map_iter_from!` macros
 

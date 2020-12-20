@@ -1,6 +1,6 @@
 [package]
 name = "velcro_macros"
-version = "0.5.0"
+version = "0.5.1"
 authors = ["Peter Hall <peterjoel@gmail.com>"]
 edition = "2018"
 license = "Unlicense OR MIT"
@@ -21,4 +21,4 @@ proc-macro = true
 
 [dependencies]
 syn = { version = "1", features = ["full"] }
-velcro_core = { version = "=0.5.0", path = "../core" }
+velcro_core = { version = "=0.5.1", path = "../core" }
