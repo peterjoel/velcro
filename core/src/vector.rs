@@ -86,7 +86,7 @@ where
         let len = self.len;
         let expr = &self.value;
         quote! {
-            #expr.into_iter().take(#len).collect::<::std::vec::Vec<_>>()
+            std::iter::IntoIterator::into_iter(#expr).take(#len).collect::<::std::vec::Vec<_>>()
         }
     }
 }
