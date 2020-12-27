@@ -1,3 +1,4 @@
+mod array;
 mod arraylike;
 mod btree_map;
 mod btree_set;
@@ -12,6 +13,7 @@ mod value;
 mod vector;
 
 pub use crate::{
+    array::ArrInput,
     btree_map::BTreeMapInput,
     btree_set::BTreeSetInput,
     hash_map::HashMapInput,
