@@ -486,3 +486,7 @@ pub use velcro_macros::map_iter;
 ///     ]);
 ///```
 pub use velcro_macros::map_iter_from;
+
+pub use velcro_macros::arr;
+
+pub use velcro_macros::arr_from;

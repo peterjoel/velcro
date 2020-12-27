@@ -1,13 +1,19 @@
 use proc_macro::TokenStream;
 use syn::parse_macro_input;
 use velcro_core::{
-    parse_raw_macro_input, BTreeMapInput, BTreeSetInput, ConvertInto, HashMapInput, HashSetInput,
-    IterInput, LinkedListInput, MapIterInput, VecInput,
+    parse_raw_macro_input, ArrInput, BTreeMapInput, BTreeSetInput, ConvertInto, HashMapInput,
+    HashSetInput, IterInput, LinkedListInput, MapIterInput, VecInput,
 };
 
 #[proc_macro]
 pub fn vec(input: TokenStream) -> TokenStream {
     let output = parse_macro_input!(input as VecInput).into_output();
+    TokenStream::from(output)
+}
+
+#[proc_macro]
+pub fn arr(input: TokenStream) -> TokenStream {
+    let output = parse_macro_input!(input as ArrInput).into_output();
     TokenStream::from(output)
 }
 
@@ -56,6 +62,12 @@ pub fn map_iter(input: TokenStream) -> TokenStream {
 #[proc_macro]
 pub fn vec_from(input: TokenStream) -> TokenStream {
     let output = parse_macro_input!(input as VecInput<ConvertInto>).into_output();
+    TokenStream::from(output)
+}
+
+#[proc_macro]
+pub fn arr_from(input: TokenStream) -> TokenStream {
+    let output = parse_macro_input!(input as ArrInput<ConvertInto>).into_output();
     TokenStream::from(output)
 }
 
