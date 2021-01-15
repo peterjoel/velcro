@@ -37,7 +37,7 @@ macro_rules! parse_raw_macro_input {
         match <$ty as $crate::ParseRaw>::parse_raw($tokenstream.into()) {
             Ok(data) => data,
             Err(err) => {
-                return ::syn::export::TokenStream::from(err.to_compile_error());
+                return ::proc_macro::TokenStream::from(err.to_compile_error());
             }
         }
     };
