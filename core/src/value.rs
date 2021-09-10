@@ -182,6 +182,14 @@ mod tests {
     }
 
     #[test]
+    fn parenthesized_spread_with_no_expression_is_single_value() {
+        let source = "(..)";
+        let tokens = TokenStream::from_str(source).unwrap();
+        let value: Value<Verbatim> = syn::parse2(tokens).unwrap();
+        assert!(value.is_simple());
+    }
+
+    #[test]
     fn expression_without_spread_is_simple() {
         let tokens = TokenStream::from_str("foo").unwrap();
         let value: Value<Verbatim> = syn::parse2(tokens).unwrap();
