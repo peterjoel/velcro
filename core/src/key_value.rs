@@ -87,14 +87,9 @@ where
     ValueExpr<V>: Parse,
 {
     let mut it = tokens.into_iter();
-    let mut value = TokenStream::new();
-    while let Some(tt) = it.next() {
-        if let TokenTree::Punct(p) = &tt {
-            if p.as_char() == ',' {
-                break;
-            }
-        }
-        value.append(tt);
-    }
+    let value: TokenStream = it
+        .by_ref()
+        .take_while(|tt| !matches!(tt, TokenTree::Punct(p) if p.as_char() == ','))
+        .collect();
     Ok((ValueExpr::parse.parse2(value)?, it.collect()))
 }
