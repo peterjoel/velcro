@@ -88,7 +88,7 @@ where
 {
     let mut it = tokens.into_iter();
     let mut value = TokenStream::new();
-    while let Some(tt) = it.next() {
+    for tt in &mut it {
         if let TokenTree::Punct(p) = &tt {
             if p.as_char() == ',' {
                 break;
