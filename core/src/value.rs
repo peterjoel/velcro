@@ -122,7 +122,7 @@ impl ToTokens for ValueIterExpr<ConvertInto> {
         let expr = remove_range_parens(&self.expr);
         let output = quote_spanned! {
             expr.span() =>
-            ::std::iter::IntoIterator::into_iter(#expr).map(|value| ::std::convert::Into::into(value))
+            ::std::iter::IntoIterator::into_iter(#expr).map(::std::convert::Into::into)
         };
         tokens.append_all(output);
     }
