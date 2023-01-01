@@ -1,6 +1,6 @@
 [package]
 name = "velcro_core"
-version = "0.5.2"
+version = "0.5.4"
 authors = ["Peter Hall <peterjoel@gmail.com>"]
 edition = "2018"
 license = "Unlicense OR MIT"
