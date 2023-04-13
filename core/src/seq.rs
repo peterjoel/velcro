@@ -18,7 +18,7 @@ where
 {
     fn parse(input: ParseStream<'_>) -> parse::Result<Self> {
         Ok(SeqInput {
-            values: input.parse_terminated(Value::parse)?,
+            values: input.parse_terminated(Value::parse, Token![,])?,
             _phantom: PhantomData,
         })
     }
