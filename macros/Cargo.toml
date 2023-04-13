@@ -20,5 +20,5 @@ categories = ["data-structures", "rust-patterns"]
 proc-macro = true
 
 [dependencies]
-syn = { version = "1", features = ["full"] }
+syn = { version = "2", features = ["full"] }
 velcro_core = { version = "=0.5.4", path = "../core" }
